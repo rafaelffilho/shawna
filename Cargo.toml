@@ -1,0 +1,21 @@
+[package]
+name = "seminario-20191-rustrafael"
+version = "0.1.0"
+authors = ["Rafael Froeschlin Filho <rafael.froe.filho@gmail.com>"]
+edition = "2018"
+
+[build]
+target = "x86_64-none.json"
+
+
+[package.metadata.bootimage]
+default-target = "x86_64-none.json"
+
+[dependencies]
+bootloader = "0.6.0"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
