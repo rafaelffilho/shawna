@@ -4,14 +4,17 @@ version = "0.1.0"
 authors = ["Rafael Froeschlin Filho <rafael.froe.filho@gmail.com>"]
 edition = "2018"
 
-[build]
-target = "x86_64-shawna.json"
-
 [package.metadata.bootimage]
 default-target = "x86_64-shawna.json"
 
 [dependencies]
 bootloader = "0.6.0"
+volatile = "0.2.3"
+spin = "0.4.9"
+
+[dependencies.lazy_static]
+version = "1.0"
+features = ["spin_no_std"]
 
 [profile.dev]
 panic = "abort"
