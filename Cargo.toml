@@ -12,6 +12,7 @@ bootloader = "0.6.0"
 volatile = "0.2.3"
 spin = "0.4.9"
 x86_64 = "0.5.2"
+pic8259_simple = "0.1.1"
 
 [dependencies.lazy_static]
 version = "1.0"
