@@ -3,7 +3,9 @@
 
 pub mod vga_driver;
 pub mod interrupts;
+pub mod gdt;
 
 pub fn init() {
+	gdt::init();
 	interrupts::init_idt();
 }
