@@ -9,7 +9,8 @@ use shawna::*;
 
 #[cfg(not(test))]
 #[panic_handler]
-fn panic(_info : & PanicInfo) -> ! {
+fn panic(_info : &PanicInfo) -> ! {
+	println!("{}", _info);
 	loop {}
 }
 
@@ -17,11 +18,11 @@ fn panic(_info : & PanicInfo) -> ! {
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
 
+	shawna::init();
+
 	print!("Hello{}", " ");
 
 	println!("World{}", "!");
-
-	print!("New line HYPERS");
 
 	loop {}
 }
