@@ -38,10 +38,10 @@ lazy_static! {
 		let mut idt = InterruptDescriptorTable::new();
 		idt.breakpoint.set_handler_fn(breakpoint_handler);
 		unsafe {
-			idt.double_fault.set_handler_fn(double_fault).
+			idt.double_fault.set_handler_fn(double_fault_handler).
 				set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
 		}
-		idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer);
+		idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_handler);
 		idt
 	};
 }
@@ -50,7 +50,7 @@ pub fn init_idt () {
 	IDT.load();
 }
 
-extern "x86-interrupt" fn timer (
+extern "x86-interrupt" fn timer_handler (
 	_stack_frame: &mut InterruptStackFrame
 ) {
 	unsafe {
@@ -58,14 +58,14 @@ extern "x86-interrupt" fn timer (
 	}
 }
 
-extern "x86-interrupt" fn double_fault (
+extern "x86-interrupt" fn double_fault_handler (
 	stack_frame: &mut InterruptStackFrame,
 	_error_code: u64
 ) {
 	panic!("EXCEPTION: DOUBLE FAULT:\n{:#?}", stack_frame);
 }
 
-extern "x86-interrupt" fn breakpoint_handler(
+extern "x86-interrupt" fn breakpoint_handler (
 	stack_frame: &mut InterruptStackFrame
 ) {
 	println!("EXCEPTION: BREAKPOINT:\n{:#?}", stack_frame);
