@@ -1,5 +1,3 @@
-#![allow(non_camel_case_types)]
-
 use x86_64::structures::idt::InterruptDescriptorTable;
 use x86_64::structures::idt::InterruptStackFrame;
 use lazy_static::lazy_static;
@@ -15,7 +13,7 @@ pub const PIC_2_OFFSET: u8 = PIC_1_OFFSET + 8;
 #[derive(Debug, Clone, Copy)]
 #[repr(u8)]
 pub enum InterruptIndex {
-	timer = PIC_1_OFFSET
+	Timer = PIC_1_OFFSET
 }
 
 impl InterruptIndex {
@@ -43,7 +41,7 @@ lazy_static! {
 			idt.double_fault.set_handler_fn(double_fault).
 				set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
 		}
-		idt[InterruptIndex::timer.as_usize()].set_handler_fn(timer);
+		idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer);
 		idt
 	};
 }
@@ -58,7 +56,7 @@ extern "x86-interrupt" fn timer (
 	print!(".");
 
 	unsafe {
-		PICS.lock().notify_end_of_interrupt(InterruptIndex::timer.as_u8());
+		PICS.lock().notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
 	}
 }
 

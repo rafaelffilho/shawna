@@ -1,5 +1,4 @@
 #![allow(dead_code)]
-#![allow(non_camel_case_types)]
 
 use core::fmt;
 use volatile::Volatile;
@@ -11,54 +10,54 @@ const WIDTH:  usize = 80;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
-pub enum color {
-	black = 0x0,
-	blue = 0x1,
-	green = 0x2,
-	cyan = 0x3,
-	red = 0x4,
-	magenta = 0x5,
-	brown = 0x6,
-	light_gray = 0x7,
-	dark_gray = 0x8,
-	light_blue = 0x9,
-	light_green = 0xa,
-	light_cyan = 0xb,
-	light_red = 0xc,
-	pink = 0xd,
-	yellow = 0xe,
-	white = 0xf
+pub enum Color {
+	Black = 0x0,
+	Blue = 0x1,
+	Green = 0x2,
+	Cyan = 0x3,
+	Red = 0x4,
+	Magenta = 0x5,
+	Brown = 0x6,
+	LightGray = 0x7,
+	DarkGray = 0x8,
+	LightBlue = 0x9,
+	LightGreen = 0xa,
+	LightCyan = 0xb,
+	LightRed = 0xc,
+	Pink = 0xd,
+	Yellow = 0xe,
+	White = 0xf
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
-struct color_code (u8);
+struct ColorCode (u8);
 
-impl color_code {
-	fn new (fg: color, bg: color) -> color_code {
-		color_code((bg as u8) << 4 | fg as u8)
+impl ColorCode {
+	fn new (fg: Color, bg: Color) -> ColorCode {
+		ColorCode((bg as u8) << 4 | fg as u8)
 	}
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
-struct screen_char {
+struct ScreenChar {
 	ascii_code: u8,
-	color_code: color_code
+	color_code: ColorCode
 }
 
 #[repr(transparent)]
-struct buffer {
-	chars: [[Volatile<screen_char>; WIDTH]; HEIGHT]
+struct Buffer {
+	chars: [[Volatile<ScreenChar>; WIDTH]; HEIGHT]
 }
 
-pub struct writer {
+pub struct Writer {
 	column_position: usize,
-	color_code: color_code,
-	buffer: &'static mut buffer
+	color_code: ColorCode,
+	buffer: &'static mut Buffer
 }
 
-impl writer {
+impl Writer {
 	pub fn write_byte (&mut self, byte: u8) {
 		match byte {
 			b'\n' => self.new_line(),
@@ -71,7 +70,7 @@ impl writer {
 				let col = self.column_position;
 				let color = self.color_code;
 
-				self.buffer.chars[row][col].write(screen_char {
+				self.buffer.chars[row][col].write(ScreenChar {
 					ascii_code: byte,
 					color_code: color
 				});
@@ -101,7 +100,7 @@ impl writer {
 	}
 
 	fn clear_row (&mut self, row: usize) {
-		let blank = screen_char {
+		let blank = ScreenChar {
 			ascii_code: b' ',
 			color_code: self.color_code
 		};
@@ -112,7 +111,7 @@ impl writer {
 	}
 }
 
-impl fmt::Write for writer {
+impl fmt::Write for Writer {
 	fn write_str (&mut self, string: &str) -> fmt::Result {
 		self.write_string(string);
 		Ok(())
@@ -120,10 +119,10 @@ impl fmt::Write for writer {
 }
 
 lazy_static! {
-	pub static ref WRITER: Mutex<writer> = Mutex::new(writer {
+	pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
 		column_position: 0,
-		color_code: color_code::new(color::white, color::black),
-		buffer: unsafe { &mut *(0xB8000 as *mut buffer) }
+		color_code: ColorCode::new(Color::White, Color::Black),
+		buffer: unsafe { &mut *(0xB8000 as *mut Buffer) }
 	});
 }
 
