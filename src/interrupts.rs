@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 use pic8259_simple::ChainedPics;
 use spin;
 
-use crate::{print, println};
+use crate::println;
 use crate::gdt;
 
 pub const PIC_1_OFFSET: u8 = 32;
@@ -53,8 +53,6 @@ pub fn init_idt () {
 extern "x86-interrupt" fn timer (
 	_stack_frame: &mut InterruptStackFrame
 ) {
-	print!(".");
-
 	unsafe {
 		PICS.lock().notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
 	}
