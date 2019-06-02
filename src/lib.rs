@@ -3,6 +3,7 @@
 
 pub mod vga_driver;
 pub mod interrupts;
+pub mod memory;
 pub mod gdt;
 
 pub fn hlt_loop() -> ! {

@@ -4,7 +4,10 @@
 #![allow(unused_attributes)]
 
 use core::panic::PanicInfo;
+use bootloader::{BootInfo, entry_point};
 use shawna::*;
+
+entry_point!(kmain);
 
 #[cfg(not(test))]
 #[panic_handler]
@@ -15,13 +18,11 @@ fn panic(_info : &PanicInfo) -> ! {
 
 #[cfg(not(test))]
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+fn kmain(_args: &'static BootInfo) -> ! {
 
 	shawna::init();
 
-	print!("Hello{}", " ");
-
-	println!("World{}", "!");
+	println!("Hello World!");
 
 	shawna::hlt_loop();
 }
