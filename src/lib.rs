@@ -5,6 +5,12 @@ pub mod vga_driver;
 pub mod interrupts;
 pub mod gdt;
 
+pub fn hlt_loop() -> ! {
+	loop {
+		x86_64::instructions::hlt();
+	}
+}
+
 pub fn init() {
 	gdt::init();
 	interrupts::init_idt();

@@ -10,7 +10,7 @@ use shawna::*;
 #[panic_handler]
 fn panic(_info : &PanicInfo) -> ! {
 	println!("{}", _info);
-	loop {}
+	shawna::hlt_loop();
 }
 
 #[cfg(not(test))]
@@ -23,5 +23,5 @@ pub extern "C" fn _start() -> ! {
 
 	println!("World{}", "!");
 
-	loop {}
+	shawna::hlt_loop();
 }
