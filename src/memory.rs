@@ -1,5 +1,5 @@
 use x86_64::structures::paging::{PageTable, PhysFrame, MapperAllSizes, MappedPageTable};
-use x86_64::structures::paging::{Page, Size4KiB, Mapper, FrameAllocator};
+use x86_64::structures::paging::{Size4KiB, FrameAllocator};
 use x86_64::registers::control::Cr3;
 use x86_64::{PhysAddr, VirtAddr};
 
