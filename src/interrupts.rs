@@ -36,6 +36,8 @@ pub static PICS: spin::Mutex<ChainedPics> =
 			}
 		);
 
+static mut TIMER: u64 = 0;
+
 lazy_static! {
 	static ref IDT: InterruptDescriptorTable = {
 		let mut idt = InterruptDescriptorTable::new();
@@ -89,6 +91,7 @@ extern "x86-interrupt" fn timer_handler (
 	_stack_frame: &mut InterruptStackFrame
 ) {
 	unsafe {
+		TIMER += 1;
 		PICS.lock().notify_end_of_interrupt(InterruptIndex::Timer.as_u8());
 	}
 }
