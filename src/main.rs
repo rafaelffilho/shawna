@@ -7,6 +7,7 @@ use core::panic::PanicInfo;
 use bootloader::{BootInfo, entry_point};
 use shawna::*;
 
+#[cfg(not(test))]
 entry_point!(kmain);
 
 #[cfg(not(test))]
