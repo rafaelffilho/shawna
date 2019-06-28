@@ -1,6 +1,6 @@
 # Shawna
 
-Kernel made for a school project. It'll not be updated anymore.
+Extremly simple kernel made for a school project. It'll not be updated anymore.
 
 Setup:
 ```bash
